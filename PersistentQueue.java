@@ -1,4 +1,3 @@
-package jp.co.wap.exam;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -135,7 +134,7 @@ public int size() {
 	if(pq==null||pq.queue.prev==this.queue.prev.queue.next)
 		return 0;
 	
-	while(pq.hashCode()!=this.queue.prev.queue.next.hashCode() )
+	while(pq.hashCode()!=this.queue.prev.queue.next.hashCode())
 	{
 		count++;
 		pq=pq.queue.next;
@@ -143,6 +142,61 @@ public int size() {
 	return count;
 	
 }
+public void print() {
+	// modify this method if necessary
+		
+		PersistentQueue<E> pq=this.queue.tail;
+		int count=1;
+		if(pq==null||pq.queue.prev==this.queue.prev.queue.next)
+			return ;
+		
+		while(pq.hashCode()!=this.queue.prev.queue.next.hashCode())
+		{
+			System.out.println(pq.queue.value);
+			pq=pq.queue.next;
+		}
+		System.out.println(pq.queue.value);
+		
+		
+		
+	}
+public PersistentQueue<E> append(PersistentQueue<E> queue)
+{
+	ImmutableList im=new ImmutableList(-1,null, null, null);
+	
+	PersistentQueue<E> pq=new PersistentQueue<E>(im);
+	PersistentQueue<E> first=this.queue.tail;
+	PersistentQueue<E> second;
+	 second=queue.queue.tail;
+    
+	while(first.hashCode()!=this.hashCode())
+	{
+		//System.out.println(first.queue.value);
+		pq=pq.enqueue(first.queue.value);
+		
+		first=first.queue.next;
+	}
+	//System.out.println(first.queue.value);
+	pq=pq.enqueue(first.queue.value);
+	pq.queue.next=second;
+    ImmutableList il=new ImmutableList(-1,null, null, null);
+	
+	PersistentQueue<E>save=new PersistentQueue<E>(il);
+	save.queue.tail=pq.queue.tail;
+	 
+	save.queue.prev=queue.queue.prev;
+    
+	
+	return save;
+}
+public PersistentQueue<E> poll()
+{
+	PersistentQueue<E> ptail=this.queue.tail;
+	int val=(Integer) ptail.queue.value;
+	System.out.println("Polled Value"+val);
+	return this.dequeue() ;
+}
+
 }
 class ImmutableList<T>{
     @SuppressWarnings("unchecked")
